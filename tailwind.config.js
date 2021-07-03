@@ -240,11 +240,6 @@ module.exports = {
     },
     fontFamily: {
       sans: [
-        'ui-sans-serif',
-        'system-ui',
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
         'Roboto',
         '"Helvetica Neue"',
         'Arial',
@@ -266,6 +261,10 @@ module.exports = {
         '"Courier New"',
         'monospace',
       ],
+      comfortaa: [
+        '"Comfortaa"',
+        'sans-serif'
+      ]
     },
     fontSize: {
       xs: ['0.75rem', { lineHeight: '1rem' }],
