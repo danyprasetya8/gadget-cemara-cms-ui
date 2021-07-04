@@ -1,6 +1,7 @@
 export default {
   page: {
     base: '/',
-    login: '/login'
+    login: '/login',
+    product: '/product'
   }
 }

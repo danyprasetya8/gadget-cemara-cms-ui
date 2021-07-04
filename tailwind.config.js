@@ -240,9 +240,6 @@ module.exports = {
     },
     fontFamily: {
       sans: [
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
         '"Noto Sans"',
         'sans-serif',
         '"Apple Color Emoji"',
@@ -966,5 +963,7 @@ module.exports = {
     wordBreak: ['responsive'],
     zIndex: ['responsive', 'focus-within', 'focus'],
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp')
+  ],
 }

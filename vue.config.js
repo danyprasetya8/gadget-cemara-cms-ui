@@ -9,6 +9,13 @@ const noMock = process.env.NODE_ENV === 'production' || process.env.NOMOCK === '
 module.exports = {
   runtimeCompiler: true,
   assetsDir: 'static',
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: '@import "~@/assets/scss/main.scss";'
+      }
+    }
+  },
   configureWebpack: {
     resolve: {
       alias: {
