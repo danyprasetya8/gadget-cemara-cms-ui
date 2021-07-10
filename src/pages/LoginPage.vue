@@ -14,12 +14,14 @@
         @submit="doLogin"
       >
         <input
+          v-model="form.email"
           type="text"
           class="focus:outline-none my-5 border border-gray-200 px-3 py-2 rounded w-11/12"
           placeholder="Email"
         />
 
         <input
+          v-model="form.password"
           type="password"
           class="focus:outline-none border border-gray-200 px-3 py-2 rounded w-11/12"
           placeholder="Password"

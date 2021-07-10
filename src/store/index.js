@@ -1,8 +1,8 @@
 import { createStore } from 'vuex'
-import commonModule from './modules/common'
+import userModule from './modules/user'
 
 export default createStore({
   modules: {
-    commonModule
+    userModule
   }
 })

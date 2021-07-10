@@ -61,27 +61,6 @@
               />
             </td>
           </tr>
-          <tr class="border border-b-gray-300">
-            <td>2</td>
-            <td>
-              <img src="~@/assets/images/dummy-product.jpg" class="w-32">
-            </td>
-            <td>P-1</td>
-            <td>Xiaomi Mi 11 Ultra 6 GB / 128 GB White</td>
-            <td>Rp. 18.000.000</td>
-            <td>99</td>
-            <td width="20%">
-              <div class="line-clamp-2">
-                Proccessor Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perspiciatis, nulla?
-              </div>
-            </td>
-            <td>
-              <PencilIcon class="w-6 cursor-pointer text-indigo-900 hover:text-indigo-800 transition duration-200 each-in-out" />
-            </td>
-            <td>
-              <TrashIcon class="w-6 cursor-pointer text-indigo-900 hover:text-indigo-800 transition duration-200 each-in-out" />
-            </td>
-          </tr>
         </tbody>
       </table>
 
