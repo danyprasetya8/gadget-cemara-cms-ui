@@ -13,6 +13,7 @@
     "@tailwindcss/line-clamp": "^0.2.1",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "axios": "^0.21.1",
+    "axios-curlirize": "^1.4.0",
     "axios-mock-adapter": "^1.19.0",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",

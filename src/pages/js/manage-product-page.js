@@ -3,6 +3,7 @@ import { useStore } from 'vuex'
 import { SearchIcon } from '@heroicons/vue/outline'
 import { PencilIcon, TrashIcon } from '@heroicons/vue/solid'
 import { numberFormatter } from '@/utils/formatter'
+import AddProductModal from '@/components/AddProductModal'
 import DashboardMenuNavigator from '@/components/DashboardMenuNavigator'
 import DeleteProductModal from '@/components/DeleteProductModal'
 import Pagination from '@/components/Pagination'
@@ -68,9 +69,31 @@ const useDeleteProduct = store => {
   }
 }
 
+const useEditProduct = () => {
+  const tempEditProduct = ref({})
+
+  const {
+    visible: visibleEditProductModal,
+    toggle: toggleEditProductModal
+  } = useModal()
+
+  const setTempEditProduct = product => {
+    tempEditProduct.value = product
+    toggleEditProductModal(true)
+  }
+
+  return {
+    tempEditProduct,
+    visibleEditProductModal,
+    toggleEditProductModal,
+    setTempEditProduct
+  }
+}
+
 export default {
   name: 'Manage Product Page',
   components: {
+    AddProductModal,
     DashboardMenuNavigator,
     DeleteProductModal,
     Pagination,
@@ -92,6 +115,16 @@ export default {
       e.target.src = productImagePlaceholder
     }
 
+    const {
+      visible: visibleAddProductModal,
+      toggle: toggleAddProductModal
+    } = useModal()
+
+    const successProduct = toggler => {
+      toggler(false)
+      getProducts(store)
+    }
+
     onMounted(() => getProducts(store))
 
     return {
@@ -101,7 +134,11 @@ export default {
       products,
       handleProductImageError,
       numberFormatter,
-      ...useDeleteProduct(store)
+      visibleAddProductModal,
+      toggleAddProductModal,
+      successProduct,
+      ...useDeleteProduct(store),
+      ...useEditProduct()
     }
   }
 }

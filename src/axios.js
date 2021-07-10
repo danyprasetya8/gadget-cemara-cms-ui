@@ -1,6 +1,9 @@
+// const curlirize = require('axios-curlirize')
 const axios = require('axios')
 
 const axiosInstance = axios.create()
+
+// curlirize.default(axiosInstance)
 
 axiosInstance.interceptors.request.use(req => {
   const token = window.localStorage.getItem('token')

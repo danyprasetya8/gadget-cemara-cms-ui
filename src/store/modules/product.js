@@ -1,5 +1,8 @@
 import api from '@/constant/api'
 import axios from '@/axios'
+import config from '@/constant/config'
+
+const apiHeaders = config.api.headers
 
 const actions = {
   getProductList (_, { payload = {}, onSuccess, onFail } = {}) {
@@ -8,18 +11,12 @@ const actions = {
       .catch(err => onFail && onFail(err))
   },
   addProduct (_, { payload = {}, onSuccess, onFail } = {}) {
-    const headers = {
-      'Content-Type': 'multipart/form-data'
-    }
-    return axios.post(api.product.base, payload.form, { headers })
+    return axios.post(api.product.base, payload.form, { headers: apiHeaders.multiPartFile })
       .then(res => onSuccess && onSuccess(res))
       .catch(err => onFail && onFail(err))
   },
   updateProduct (_, { payload = {}, onSuccess, onFail } = {}) {
-    const headers = {
-      'Content-Type': 'multipart/form-data'
-    }
-    return axios.post(api.product.id(payload.productId), payload.form, { headers })
+    return axios.put(api.product.id(payload.productId), payload.form, { headers: apiHeaders.multiPartFile })
       .then(res => onSuccess && onSuccess(res))
       .catch(err => onFail && onFail(err))
   },

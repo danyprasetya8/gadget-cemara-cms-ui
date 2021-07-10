@@ -10,6 +10,7 @@
         <div class="flex">
           <button
             class="px-6 py-1 text-white bg-indigo-900 rounded hover:bg-indigo-800 transition duration-300 each-in-out"
+            @click="toggleAddProductModal(true)"
           >
             Add product
           </button>
@@ -43,13 +44,15 @@
             :key="product.sku"
             class="border border-b-gray-300"
           >
-            <td>{{ index + 1 }}</td>
+            <td>{{ (pagination.page - 1) * pagination.size + index + 1 }}</td>
             <td>
-              <img
-                :src="product.image"
-                class="w-32"
-                @error="handleProductImageError"
-              >
+              <object data="@/assets/images/product-placeholder.jpg" type="image/jpg">
+                <img
+                  :src="product.image"
+                  class="w-32"
+                  @error="handleProductImageError"
+                >
+              </object>
             </td>
             <td>{{ product.sku }}</td>
             <td>{{ product.name }}</td>
@@ -61,7 +64,10 @@
               </div>
             </td>
             <td>
-              <PencilIcon class="w-6 cursor-pointer text-indigo-900 hover:text-indigo-800 transition duration-200 each-in-out" />
+              <PencilIcon
+                class="w-6 cursor-pointer text-indigo-900 hover:text-indigo-800 transition duration-200 each-in-out"
+                @click="setTempEditProduct(product)"
+              />
             </td>
             <td>
               <TrashIcon
@@ -80,9 +86,21 @@
         class="mt-6 float-right"
       />
 
+      <AddProductModal
+        v-if="visibleAddProductModal"
+        @success="successProduct(toggleAddProductModal)"
+        @close="toggleAddProductModal(false)"
+      />
+
+      <AddProductModal
+        v-if="visibleEditProductModal"
+        :product="tempEditProduct"
+        @success="successProduct(toggleEditProductModal)"
+        @close="toggleEditProductModal(false)"
+      />
+
       <DeleteProductModal
         v-if="visibleDeleteProductModal"
-        :visible="visibleDeleteProductModal"
         :product="tempDeleteProduct"
         @close="toggleDeleteProductModal(false)"
         @delete="doDeleteProduct"
