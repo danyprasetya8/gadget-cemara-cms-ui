@@ -17,6 +17,7 @@
           <div class="flex border border-gray-300 px-3 py-1 ml-6 rounded">
             <SearchIcon class="w-6 text-gray-300" />
             <input
+              v-model="keyword"
               type="text"
               class="focus:outline-none ml-2"
             >
@@ -24,7 +25,7 @@
         </div>
       </div>
 
-      <table class="manage-product-table border border-collapse border-gray-300">
+      <table class="manage-product-table border border-collapse border-gray-300 w-full">
         <thead class="text-gray-400 text-left border border-b-gray-300">
           <th></th>
           <th>Image</th>
@@ -37,18 +38,26 @@
           <th></th>
         </thead>
         <tbody>
-          <tr class="border border-b-gray-300">
-            <td>1</td>
+          <tr
+            v-for="(product, index) in products"
+            :key="product.sku"
+            class="border border-b-gray-300"
+          >
+            <td>{{ index + 1 }}</td>
             <td>
-              <img src="~@/assets/images/dummy-product.jpg" class="w-32">
+              <img
+                :src="product.image"
+                class="w-32"
+                @error="handleProductImageError"
+              >
             </td>
-            <td>P-1</td>
-            <td>Xiaomi Mi 11 Ultra 6 GB / 128 GB White</td>
-            <td>Rp. 18.000.000</td>
-            <td>99</td>
+            <td>{{ product.sku }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ numberFormatter(product.price, 'Rp.') }}</td>
+            <td>{{ numberFormatter(product.stock) }}</td>
             <td width="20%">
               <div class="line-clamp-2">
-                Proccessor Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perspiciatis, nulla?
+                {{ product.description }}
               </div>
             </td>
             <td>
@@ -57,7 +66,7 @@
             <td>
               <TrashIcon
                 class="w-6 cursor-pointer text-indigo-900 hover:text-indigo-800 transition duration-200 each-in-out"
-                @click="deleteProduct({ id: 'P-1', name: 'Xiaomi hehehe' })"
+                @click="deleteProduct(product)"
               />
             </td>
           </tr>
@@ -65,7 +74,8 @@
       </table>
 
       <Pagination
-        :totalPage="10"
+        v-if="pagination.page"
+        :totalPage="pagination.totalPages"
         v-model:currentPage="currentPage"
         class="mt-6 float-right"
       />

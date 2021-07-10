@@ -30,7 +30,7 @@ const useLogin = () => {
         }
       },
       onSuccess (res) {
-        window.localStorage.setItem('token', res.data.token)
+        window.localStorage.setItem('token', res.data.data.token)
         store.dispatch('getCurrentUser', {
           onSuccess () {
             if (route.query.redirect) {

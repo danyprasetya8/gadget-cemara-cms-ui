@@ -5,7 +5,7 @@
         Admin
       </div>
       <div class="uppercase tracking-wider text-2xl mt-3">
-        Dany Prasetya Angtoni
+        {{ name }}
       </div>
 
 
