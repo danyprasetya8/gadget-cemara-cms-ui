@@ -25,16 +25,29 @@ export default {
     let stock = ref('')
     let description = ref('')
 
-    const addProduct = e => {
-      e.preventDefault()
-
+    const createForm = () => {
       const form = new FormData()
       form.append('name', name.value)
       form.append('image', image.value)
       form.append('price', price.value)
       form.append('stock', stock.value)
       form.append('description', description.value)
+      return form
+    } 
 
+    const isValid = computed(() => {
+      return !!name.value && !!image.value && !!price.value && !!stock.value && !!description.value
+    })
+
+    const addProduct = e => {
+      e.preventDefault()
+      
+      if (!isValid.value) {
+        store.commit('errorSnackbar', 'Fill all the form correctly')
+        return
+      }
+
+      const form = createForm()
       const ACTIONS = isEditMode.value ? 'updateProduct' : 'addProduct'
       const payload = {
         form,
@@ -45,6 +58,9 @@ export default {
         payload,
         onSuccess () {
           emit('success')
+        },
+        onFail () {
+          store.commit('generalErrorSnackbar')
         }
       })
     }

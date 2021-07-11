@@ -56,7 +56,10 @@ const useDeleteProduct = store => {
     store.dispatch('deleteProduct', {
       payload: { productId: tempDeleteProduct.value.sku },
       onSuccess: clear,
-      onFail: clear
+      onFail: () => {
+        store.commit('generalErrorSnackbar')
+        clear()
+      }
     })
   }
   

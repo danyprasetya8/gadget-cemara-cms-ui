@@ -1,5 +1,5 @@
 import { isValidEmail } from '@/utils/validation'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import config from '@/constant/config'
@@ -16,32 +16,38 @@ const useLogin = () => {
     password: 'secretpassword'
   })
 
-  const validForm = computed(() => {
-    return isValidEmail(form.value.email) && form.value.password.length
-  })
-
   const doLogin = e => {
     e.preventDefault()
-    validForm.value && store.dispatch('login', {
+
+    if (!isValidEmail(form.value.email) || !form.value.password.length) {
+      store.commit('errorSnackbar', 'Fill email / password correctly')
+      return
+    }
+
+    store.dispatch('login', {
       payload: {
         requestBody: {
           email: form.value.email,
           password: form.value.password
         }
       },
-      onSuccess (res) {
-        window.localStorage.setItem('token', res.data.data.token)
-        store.dispatch('getCurrentUser', {
-          onSuccess () {
-            if (route.query.redirect) {
-              const parsed = atob(route.query.redirect)
-              router.push(parsed)
-              return
-            }
+      onSuccess: loginOnSuccess,
+      onFail () {
+        store.commit('errorSnackbar', 'Wrong credential')
+      }
+    })
+  }
 
-            router.push(path.base)
-          }
-        })
+  const loginOnSuccess = res => {
+    window.localStorage.setItem('token', res.data.data.token)
+    store.dispatch('getCurrentUser', {
+      onSuccess () {
+        if (route.query.redirect) {
+          const parsed = atob(route.query.redirect)
+          router.push(parsed)
+          return
+        }
+        router.push(path.base)
       }
     })
   }
@@ -55,10 +61,8 @@ const useLogin = () => {
 export default {
   name: 'LoginPage',
   setup () {
-    const { doLogin, form } = useLogin()
     return {
-      form,
-      doLogin
+      ...useLogin(),
     }
   }
 }
