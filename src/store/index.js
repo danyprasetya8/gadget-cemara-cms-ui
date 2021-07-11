@@ -1,8 +1,12 @@
 import { createStore } from 'vuex'
-import commonModule from './modules/common'
+import userModule from './modules/user'
+import productModule from './modules/product'
+import snackbarModule from './modules/snackbar'
 
 export default createStore({
   modules: {
-    commonModule
+    userModule,
+    productModule,
+    snackbarModule
   }
 })

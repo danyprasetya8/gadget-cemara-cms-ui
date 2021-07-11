@@ -10,6 +10,7 @@
         <div class="flex">
           <button
             class="px-6 py-1 text-white bg-indigo-900 rounded hover:bg-indigo-800 transition duration-300 each-in-out"
+            @click="toggleAddProductModal(true)"
           >
             Add product
           </button>
@@ -17,6 +18,7 @@
           <div class="flex border border-gray-300 px-3 py-1 ml-6 rounded">
             <SearchIcon class="w-6 text-gray-300" />
             <input
+              v-model="keyword"
               type="text"
               class="focus:outline-none ml-2"
             >
@@ -24,7 +26,7 @@
         </div>
       </div>
 
-      <table class="manage-product-table border border-collapse border-gray-300">
+      <table class="manage-product-table border border-collapse border-gray-300 w-full">
         <thead class="text-gray-400 text-left border border-b-gray-300">
           <th></th>
           <th>Image</th>
@@ -37,63 +39,68 @@
           <th></th>
         </thead>
         <tbody>
-          <tr class="border border-b-gray-300">
-            <td>1</td>
+          <tr
+            v-for="(product, index) in products"
+            :key="product.sku"
+            class="border border-b-gray-300"
+          >
+            <td>{{ (pagination.page - 1) * pagination.size + index + 1 }}</td>
             <td>
-              <img src="~@/assets/images/dummy-product.jpg" class="w-32">
+              <object data="@/assets/images/product-placeholder.jpg" type="image/jpg">
+                <img
+                  :src="product.image"
+                  class="w-32"
+                  @error="handleProductImageError"
+                >
+              </object>
             </td>
-            <td>P-1</td>
-            <td>Xiaomi Mi 11 Ultra 6 GB / 128 GB White</td>
-            <td>Rp. 18.000.000</td>
-            <td>99</td>
+            <td>{{ product.sku }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ numberFormatter(product.price, 'Rp.') }}</td>
+            <td>{{ numberFormatter(product.stock) }}</td>
             <td width="20%">
               <div class="line-clamp-2">
-                Proccessor Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perspiciatis, nulla?
+                {{ product.description }}
               </div>
             </td>
             <td>
-              <PencilIcon class="w-6 cursor-pointer text-indigo-900 hover:text-indigo-800 transition duration-200 each-in-out" />
+              <PencilIcon
+                class="w-6 cursor-pointer text-indigo-900 hover:text-indigo-800 transition duration-200 each-in-out"
+                @click="setTempEditProduct(product)"
+              />
             </td>
             <td>
               <TrashIcon
                 class="w-6 cursor-pointer text-indigo-900 hover:text-indigo-800 transition duration-200 each-in-out"
-                @click="deleteProduct({ id: 'P-1', name: 'Xiaomi hehehe' })"
+                @click="deleteProduct(product)"
               />
-            </td>
-          </tr>
-          <tr class="border border-b-gray-300">
-            <td>2</td>
-            <td>
-              <img src="~@/assets/images/dummy-product.jpg" class="w-32">
-            </td>
-            <td>P-1</td>
-            <td>Xiaomi Mi 11 Ultra 6 GB / 128 GB White</td>
-            <td>Rp. 18.000.000</td>
-            <td>99</td>
-            <td width="20%">
-              <div class="line-clamp-2">
-                Proccessor Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perspiciatis, nulla?
-              </div>
-            </td>
-            <td>
-              <PencilIcon class="w-6 cursor-pointer text-indigo-900 hover:text-indigo-800 transition duration-200 each-in-out" />
-            </td>
-            <td>
-              <TrashIcon class="w-6 cursor-pointer text-indigo-900 hover:text-indigo-800 transition duration-200 each-in-out" />
             </td>
           </tr>
         </tbody>
       </table>
 
       <Pagination
-        :totalPage="10"
+        v-if="pagination.page"
+        :totalPage="pagination.totalPages"
         v-model:currentPage="currentPage"
         class="mt-6 float-right"
       />
 
+      <AddProductModal
+        v-if="visibleAddProductModal"
+        @success="successProduct(toggleAddProductModal)"
+        @close="toggleAddProductModal(false)"
+      />
+
+      <AddProductModal
+        v-if="visibleEditProductModal"
+        :product="tempEditProduct"
+        @success="successProduct(toggleEditProductModal)"
+        @close="toggleEditProductModal(false)"
+      />
+
       <DeleteProductModal
         v-if="visibleDeleteProductModal"
-        :visible="visibleDeleteProductModal"
         :product="tempDeleteProduct"
         @close="toggleDeleteProductModal(false)"
         @delete="doDeleteProduct"

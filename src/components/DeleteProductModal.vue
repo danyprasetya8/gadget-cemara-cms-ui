@@ -39,10 +39,6 @@ export default {
     product: {
       type: Object,
       required: true
-    },
-    visible: {
-      type: Boolean,
-      required: true
     }
   }
 }
